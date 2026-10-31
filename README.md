@@ -1,6 +1,7 @@
-# Telecom Customer Churn Analysis
+# Telecom Customer Churn Dashboard
 
-> **Live demo:** [Open the Telecom Churn Analysis website](https://telecom-churn-project-sable.vercel.app/)
+**Live Demo:** [https://kd-telecom-churn-project-sable.vercel.app/](https://kd-telecom-churn-project-sable.vercel.app/)  
+**GitHub Repository:** [kunal-dushing/telecom-churn-dashboard](https://github.com/kunal-dushing/telecom-churn-dashboard)
 
 A portfolio project exploring customer churn patterns in IBM's public Telco Customer Churn sample dataset. The website presents descriptive findings, a baseline churn model, and retention ideas for further investigation.
 
