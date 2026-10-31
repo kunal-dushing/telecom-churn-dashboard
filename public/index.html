@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive telecom customer churn dashboard with contract, service, tenure, and model metrics.">
+  <title>Telecom Customer Churn Dashboard</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0e1016;--sidebar:#24252d;--panel:#121722;--panel2:#191d27;--line:#2b303c;--text:#f4f6fb;--muted:#a5adbb;--blue:#83c5ff;--mint:#4bd6b1;--coral:#fb7185;--radius:15px}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}.layout{min-height:100vh;display:grid;grid-template-columns:270px minmax(0,1fr)}aside{background:var(--sidebar);border-right:1px solid #333640;padding:34px 22px;position:sticky;top:0;height:100vh;overflow:auto}main{width:min(1500px,100%);padding:36px clamp(24px,4vw,64px) 48px;margin:auto}.brand{font-weight:750;letter-spacing:.02em;margin:0 0 6px}.brand span{color:var(--blue)}.sidebar-caption{color:var(--muted);font-size:.86rem;margin:0 0 28px}.filter-group{border-top:1px solid #3a3c45;padding:20px 0}.filter-group h2{font-size:.94rem;margin:0 0 12px}.check-list{display:grid;gap:9px}.check{display:flex;align-items:center;gap:10px;color:#e4e7ee;font-size:.9rem;cursor:pointer}.check input{accent-color:#fb5862;width:16px;height:16px}.filter-hint{font-size:.78rem;color:var(--muted);margin:11px 0 0}.reset{border:1px solid #555964;background:transparent;color:#e8eaf0;padding:9px 12px;border-radius:8px;cursor:pointer;width:100%;font:inherit}.reset:hover{background:#333640}.content-header{margin-bottom:26px}.content-header h1{font-size:clamp(1.9rem,3.4vw,3.15rem);line-height:1.12;letter-spacing:-.04em;margin:0 0 12px}.content-header p{color:var(--muted);margin:0}.eyebrow{text-transform:uppercase;color:#aab8ce;font-size:.74rem;letter-spacing:.15em;font-weight:700;margin-bottom:10px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:24px 0 34px}.stat{padding:18px 20px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}.stat-label{color:#d1d7e2;font-size:.86rem}.stat-value{font-size:clamp(1.8rem,3vw,2.45rem);font-weight:720;letter-spacing:-.035em;margin-top:5px;font-variant-numeric:tabular-nums}.stat-note{font-size:.78rem;color:var(--muted);margin-top:2px}.section{margin:30px 0}.section h2{font-size:1.45rem;letter-spacing:-.02em;margin:0 0 4px}.section-sub{color:var(--muted);margin:0 0 13px;font-size:.88rem}.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;overflow:hidden}.chart-wrap{width:100%;overflow-x:auto}.chart{display:block;width:100%;min-width:560px;height:auto}.chart text{font-family:inherit;fill:#e7eaf0;font-size:12px}.chart .tick{fill:#c9d0dc;font-size:11px}.chart .axis-label{fill:#dbe0e8;font-size:12px}.chart .gridline{stroke:#333946;stroke-width:1}.chart .bar{fill:var(--blue)}.chart .bar-value{fill:#f2f6fc;font-weight:700;font-size:12px}.table-wrap{overflow-x:auto;margin-top:10px}table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:480px}th,td{text-align:left;padding:10px 12px;border:1px solid var(--line)}th{background:var(--panel2);color:#c5cdd9;font-weight:600}td.num{text-align:right;font-variant-numeric:tabular-nums}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}.model-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0 16px}.model-card{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:15px}.model-card strong{display:block;font-size:1.45rem}.model-card span{color:var(--muted);font-size:.82rem}.callout{border-left:3px solid #f4b858;background:#211f1a;border-radius:0 8px 8px 0;padding:12px 14px;color:#d7d0c1;font-size:.86rem}.note{color:var(--muted);font-size:.84rem}.recommendations{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.rec{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:17px}.rec b{display:block;margin-bottom:6px}.rec p{margin:0;color:var(--muted);font-size:.86rem}.error{color:#ff98a5;background:#321c25;padding:12px;border-radius:8px}.foot{border-top:1px solid var(--line);margin-top:38px;padding-top:17px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.8rem}.foot a{color:#acd6ff}
+    @media(max-width:850px){.layout{grid-template-columns:1fr}aside{position:static;height:auto;border-right:0;border-bottom:1px solid #333640;padding:20px 22px}.sidebar-caption{margin-bottom:12px}.filter-columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}.filter-group{padding:14px 0}.reset{max-width:220px}main{padding-top:24px}.two-col{grid-template-columns:1fr}}
+    @media(max-width:540px){.filter-columns{grid-template-columns:1fr}.stats{gap:9px}.stat{padding:14px}.stat-label{font-size:.78rem}.stat-value{font-size:1.6rem}.panel{padding:15px}.model-grid{gap:8px}.model-card{padding:11px}.model-card strong{font-size:1.2rem}.recommendations{grid-template-columns:1fr}.content-header h1{font-size:2rem}}
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <p class="brand">CHURN<span>/</span>INSIGHTS</p>
+      <p class="sidebar-caption">Explore customer segments</p>
+      <div class="filter-columns">
+        <section class="filter-group" aria-labelledby="contract-title">
+          <h2 id="contract-title">Contract type</h2>
+          <div id="contract-filters" class="check-list"></div>
+        </section>
+        <section class="filter-group" aria-labelledby="service-title">
+          <h2 id="service-title">Internet service</h2>
+          <div id="service-filters" class="check-list"></div>
+        </section>
+      </div>
+      <button id="reset-filters" class="reset" type="button">Reset filters</button>
+      <p class="filter-hint">Charts and customer totals update when you change filters.</p>
+    </aside>
+
+    <main>
+      <header class="content-header">
+        <div class="eyebrow">Customer retention · Sample analysis</div>
+        <h1>Telecom Customer Churn Dashboard</h1>
+        <p>Explore IBM's public sample dataset—this is not live company data.</p>
+      </header>
+
+      <section class="stats" aria-label="Selected customer summary">
+        <article class="stat"><div class="stat-label">Customers in selection</div><div id="customer-total" class="stat-value">—</div><div class="stat-note">Matching selected segments</div></article>
+        <article class="stat"><div class="stat-label">Churned customers</div><div id="churn-total" class="stat-value">—</div><div class="stat-note">Customers labeled Churn = Yes</div></article>
+        <article class="stat"><div class="stat-label">Churn rate</div><div id="churn-rate" class="stat-value">—</div><div class="stat-note">Churned ÷ customers in selection</div></article>
+      </section>
+
+      <section class="section">
+        <h2>Churn rate by contract</h2><p class="section-sub">Churned customers as a share of each selected contract group</p>
+        <div class="panel"><div class="chart-wrap"><div id="contract-chart"></div></div><div id="contract-table" class="table-wrap"></div></div>
+      </section>
+
+      <section class="section">
+        <h2>Churn rate by customer tenure</h2><p class="section-sub">Churn rate within each selected tenure band</p>
+        <div class="panel"><div class="chart-wrap"><div id="tenure-chart"></div></div><div id="tenure-table" class="table-wrap"></div></div>
+      </section>
+
+      <section class="section">
+        <h2>Baseline model evaluation</h2><p class="section-sub">Fixed metrics from the held-out test set; these do not change with the segment filters.</p>
+        <div class="model-grid">
+          <div class="model-card"><strong>0.74</strong><span>Accuracy</span></div>
+          <div class="model-card"><strong>0.78</strong><span>Recall for churn</span></div>
+          <div class="model-card"><strong>0.842</strong><span>ROC-AUC</span></div>
+        </div>
+        <div class="callout">The model found 293 of 374 customers who churned, and also flagged 288 customers who stayed. Use this as a baseline, not as an automatic retention decision.</div>
+      </section>
+
+      <section class="section">
+        <h2>Retention questions to investigate</h2><p class="section-sub">Segment differences are leads for research, not proof of what causes churn.</p>
+        <div class="recommendations">
+          <article class="rec"><b>Early customer experience</b><p>Review onboarding, billing clarity, and support needs for customers in their first year.</p></article>
+          <article class="rec"><b>Flexible contracts</b><p>Test suitable renewal options for month-to-month customers and measure retention and margin.</p></article>
+          <article class="rec"><b>Fiber service feedback</b><p>Investigate service quality, pricing, and support feedback before choosing a change.</p></article>
+        </div>
+      </section>
+
+      <footer class="foot"><span>Telecom churn analysis · Portfolio project</span><span>IBM public sample · <a href="https://github.com/IBM/telco-customer-churn-on-icp4d" target="_blank" rel="noreferrer">Dataset source</a></span></footer>
+    </main>
+  </div>
+  <script>
+    const contractOrder = ["Month-to-month", "One year", "Two year"];
+    const serviceOrder = ["DSL", "Fiber optic", "No"];
+    const tenureOrder = ["0-12 months", "13-24 months", "25-48 months", "49-72 months"];
+    let segmentData = [];
+
+    function addFilters(containerId, name, values) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = values.map((value, i) => `<label class="check"><input type="checkbox" name="${name}" value="${value}" checked><span>${value}</span></label>`).join("");
+      container.querySelectorAll("input").forEach(input => input.addEventListener("change", renderDashboard));
+    }
+
+    function selectedValues(name) {
+      return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(input => input.value);
+    }
+
+    function summarize(rows, key, order) {
+      return order.map(label => {
+        const subset = rows.filter(row => row[key] === label);
+        const customers = subset.reduce((sum, row) => sum + row.Customers, 0);
+        const churned = subset.reduce((sum, row) => sum + row.Churned, 0);
+        return {label, customers, churned, rate: customers ? churned / customers * 100 : 0};
+      }).filter(row => row.customers > 0);
+    }
+
+    function makeChart(items, accessibleTitle) {
+      const width = 820, height = 310, left = 54, right = 20, top = 16, bottom = 98;
+      const plotHeight = height - top - bottom, plotWidth = width - left - right, maxRate = Math.max(60, Math.ceil(Math.max(0, ...items.map(item => item.rate)) / 10) * 10);
+      const ticks = Array.from({length: maxRate / 10 + 1}, (_, index) => index * 10);
+      const slot = plotWidth / Math.max(items.length, 1), barWidth = Math.min(170, slot * .62);
+      let svg = `<svg class="chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="${accessibleTitle}"><title>${accessibleTitle}</title>`;
+      ticks.forEach(tick => {
+        const y = top + plotHeight - (tick / maxRate) * plotHeight;
+        svg += `<line class="gridline" x1="${left}" y1="${y}" x2="${width-right}" y2="${y}"/><text class="tick" x="${left-12}" y="${y+4}" text-anchor="end">${tick}</text>`;
+      });
+      items.forEach((item, index) => {
+        const x = left + index * slot + (slot - barWidth) / 2;
+        const barHeight = Math.max(1, item.rate / maxRate * plotHeight);
+        const y = top + plotHeight - barHeight;
+        const labelY = height - 14, labelX = x + barWidth / 2;
+        svg += `<rect class="bar" x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" rx="1"/>`;
+        svg += `<text class="bar-value" x="${labelX}" y="${Math.max(top+13,y-8)}" text-anchor="middle">${item.rate.toFixed(1)}%</text>`;
+        svg += `<text class="axis-label" transform="rotate(-90 ${labelX} ${labelY})" x="${labelX}" y="${labelY}" text-anchor="middle">${item.label}</text>`;
+      });
+      svg += `<text class="axis-label" transform="rotate(-90 15 ${top+plotHeight/2})" x="15" y="${top+plotHeight/2}" text-anchor="middle">Churn rate (%)</text>`;
+      svg += `</svg>`;
+      return svg;
+    }
+
+    function makeTable(items, firstColumn) {
+      const rows = items.map(item => `<tr><td>${item.label}</td><td class="num">${item.customers.toLocaleString()}</td><td class="num">${item.churned.toLocaleString()}</td><td class="num">${item.rate.toFixed(1)}%</td></tr>`).join("");
+      return `<table><thead><tr><th>${firstColumn}</th><th>Customers</th><th>Churned</th><th>Churn rate</th></tr></thead><tbody>${rows}</tbody></table>`;
+    }
+
+    function renderDashboard() {
+      const contracts = selectedValues("contract"), services = selectedValues("service");
+      const rows = segmentData.filter(row => contracts.includes(row.Contract) && services.includes(row.InternetService));
+      const customers = rows.reduce((sum, row) => sum + row.Customers, 0);
+      const churned = rows.reduce((sum, row) => sum + row.Churned, 0);
+      document.getElementById("customer-total").textContent = customers.toLocaleString();
+      document.getElementById("churn-total").textContent = churned.toLocaleString();
+      document.getElementById("churn-rate").textContent = customers ? `${(churned / customers * 100).toFixed(1)}%` : "—";
+
+      const contractSummary = summarize(rows, "Contract", contractOrder);
+      const tenureSummary = summarize(rows, "TenureGroup", tenureOrder);
+      document.getElementById("contract-chart").innerHTML = contractSummary.length ? makeChart(contractSummary, "Customer churn rate by contract type") : "<p class='note'>Select at least one segment to show the chart.</p>";
+      document.getElementById("tenure-chart").innerHTML = tenureSummary.length ? makeChart(tenureSummary, "Customer churn rate by tenure group") : "<p class='note'>Select at least one segment to show the chart.</p>";
+      document.getElementById("contract-table").innerHTML = contractSummary.length ? makeTable(contractSummary, "Contract") : "";
+      document.getElementById("tenure-table").innerHTML = tenureSummary.length ? makeTable(tenureSummary, "Tenure group") : "";
+    }
+
+    document.getElementById("reset-filters").addEventListener("click", () => {
+      document.querySelectorAll(".check input").forEach(input => input.checked = true);
+      renderDashboard();
+    });
+
+    addFilters("contract-filters", "contract", contractOrder);
+    addFilters("service-filters", "service", serviceOrder);
+    fetch("churn_segments.json")
+      .then(response => { if (!response.ok) throw new Error("The segment data file could not be loaded."); return response.json(); })
+      .then(data => { segmentData = data; renderDashboard(); })
+      .catch(error => {
+        document.querySelector("main").insertAdjacentHTML("afterbegin", `<p class="error">${error.message} Make sure <code>churn_segments.json</code> is deployed next to this page.</p>`);
+      });
+  </script>
+</body>
+</html>
+
+
